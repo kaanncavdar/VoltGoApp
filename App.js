@@ -2,10 +2,7 @@ import * as React from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import FirstScreen from "./src/screens/firstScreen";
-import Login from "./src/screens/logIn";
-import Home from "./src/screens/home";
-import NewUser from "./src/screens/newUser";
+import {FirstScreen, Login, Home, NewUser} from "./src";
 
 const Stack = createNativeStackNavigator();
 

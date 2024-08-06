@@ -26,6 +26,8 @@ export default function Login({navigation}) {
           <TextInput
             placeholder="(5 - - - - - - - - -)*"
             style={styles.input}
+            keyboardType="numeric"
+            maxLength={10}
           />
           <Text style={styles.text} allowFontScaling={false}>
             Şifre
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: PhoneWidth * 0.7,
-    height: PhoneHeight * 0.3,
+    height: PhoneHeight * 0.18,
     alignSelf: "center"
   },
   input: {
