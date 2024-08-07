@@ -1,5 +1,6 @@
 // Koşulların sağlandığını gösteren css'ler hariç fonskiyon çalışıyor
 //İlk halinde iki inputta bos olduğu için şifreler uyuşuyor yazısı çıkıyor bu yüzden underline yaptığımda yeşil gözüküyor onu kontrol et
+//tekrar bak buraya önemli
 import React, {useState} from "react";
 import {
   Image,
@@ -18,9 +19,13 @@ export default function Password({navigation}) {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const isSixCharacters = password.length >= 6;
+  const nullPassword = password.length === 0;
   const hasNumber = /\d/.test(password);
   const hasUpperCase = /[A-Z]/.test(password);
-  const passwordsMatch = password === confirmPassword;
+  const passwordsMatch =
+    password === confirmPassword &&
+    password.length > 0 &&
+    confirmPassword.length > 0;
 
   return (
     <SafeAreaView style={styles.container}>
