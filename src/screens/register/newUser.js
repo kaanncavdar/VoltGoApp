@@ -1,5 +1,5 @@
 //SMS kontrolü yapmıyoruz
-//Telefon numarası zaten varsa hata vermesi gerekiyor ama şu anlık kontrol yok
+//Telefon numarası zaten varsa hata vermesi gerekiyor ama henüz kontrol etmiyoruz
 import React, {useState} from "react";
 import {
   Image,

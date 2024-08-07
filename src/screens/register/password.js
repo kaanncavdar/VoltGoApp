@@ -108,7 +108,7 @@ export default function Password({navigation}) {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("PersonID")}
             disabled={
               !isSixCharacters || !hasNumber || !hasUpperCase || !passwordsMatch
             }
