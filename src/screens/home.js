@@ -8,7 +8,7 @@ function Home() {
     <SafeAreaView style={styles.home}>
       <ScrollView>
         <View>
-          <Text style={styles.homeText}>Başardınız!!</Text>
+          <Text style={styles.homeText}>Bu sayfaya geldiyseniz görmek istediğiniz sayfa henüz yapım aşamasında demektir. Daha sonra tekrar deneyiniz.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

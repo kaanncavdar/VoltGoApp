@@ -99,7 +99,7 @@ export default function PersonID({navigation}) {
             ]}
             onPress={() => {
               if (isFormValid()) {
-                navigation.navigate("Home"); // Geçiş yapılacak ekran adı
+                navigation.navigate("Choose");
               }
             }}
             disabled={!isFormValid()}
