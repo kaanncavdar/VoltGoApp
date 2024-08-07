@@ -2,7 +2,7 @@ import * as React from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {FirstScreen, Login, Home, NewUser} from "./src";
+import {FirstScreen, Login, Home, NewUser, Password} from "./src";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,11 +35,21 @@ function App() {
             }}
           />
           <Stack.Screen
+            name="Password"
+            component={Password}
+            options={{
+              headerTintColor: "#ffffff",
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: ""
+            }}
+          />
+          <Stack.Screen
             name="Home"
             component={Home}
             options={{
               headerTintColor: "#ffffff",
-              headerStyle: {backgroundColor: "#000000"}
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: "Deneme sayfası"
             }}
           />
         </Stack.Navigator>

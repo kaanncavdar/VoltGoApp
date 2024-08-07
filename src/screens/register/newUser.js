@@ -1,4 +1,6 @@
-import React from "react";
+//SMS kontrolü yapmıyoruz
+//Telefon numarası zaten varsa hata vermesi gerekiyor ama şu anlık kontrol yok
+import React, {useState} from "react";
 import {
   Image,
   SafeAreaView,
@@ -8,16 +10,20 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../constans/config";
 import {ScrollView} from "react-native-gesture-handler";
 
 export default function NewUser({navigation}) {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const isButtonEnabled = phoneNumber.length === 10;
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <Image
           style={styles.image}
-          source={require("../assets/logoVoltgo.png")}
+          source={require("../../assets/logoVoltgo.png")}
         />
         <View style={styles.info}>
           <Text style={styles.infoText} allowFontScaling={false}>
@@ -35,15 +41,21 @@ export default function NewUser({navigation}) {
             style={styles.input}
             keyboardType="numeric"
             maxLength={10}
+            onChangeText={text => setPhoneNumber(text)}
+            value={phoneNumber}
           />
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.sendButton}
-            onPress={() => navigation.navigate("Home")}
+            style={[
+              styles.sendButton,
+              {backgroundColor: isButtonEnabled ? "#63b32e" : "#a0a0a0"}
+            ]}
+            onPress={() => isButtonEnabled && navigation.navigate("Password")}
+            disabled={!isButtonEnabled}
           >
             <Text style={styles.sendButtonText} allowFontScaling={false}>
-              GÖNDER
+              DEVAM ET
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -109,7 +121,6 @@ const styles = StyleSheet.create({
   sendButton: {
     width: PhoneWidth * 0.9,
     height: PhoneHeight * 0.08,
-    backgroundColor: "#63b32e",
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center"
