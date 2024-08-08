@@ -41,14 +41,16 @@ export default function FirstScreen({navigation}) {
           </Text>
         </View>
       </TouchableOpacity>
-      <View style={styles.guestContainer}>
-        <Text style={styles.guestText1} allowFontScaling={false}>
-          Misafir Girişi _____________________________
-        </Text>
-        <Text style={styles.guestText2} allowFontScaling={false}>
-          İncelemek istiyorum.
-        </Text>
-      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Tckn")}>
+        <View style={styles.guestContainer}>
+          <Text style={styles.guestText1} allowFontScaling={false}>
+            Misafir Girişi _____________________________
+          </Text>
+          <Text style={styles.guestText2} allowFontScaling={false}>
+            İncelemek istiyorum.
+          </Text>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
