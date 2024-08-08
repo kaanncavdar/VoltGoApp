@@ -7,3 +7,4 @@ export {default as Password} from "./screens/register/password";
 export {default as PersonID} from "./screens/register/personID";
 export {default as Choose} from "./screens/register/choose";
 export {default as Tckn} from "./screens/register/bireysel/tckn";
+export {default as CreditCard} from "./screens/register/creditCard";

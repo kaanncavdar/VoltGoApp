@@ -15,6 +15,7 @@ export default function Login({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        {/* Logo */}
         <Image
           style={styles.image}
           source={require("../assets/logoVoltgo.png")}
