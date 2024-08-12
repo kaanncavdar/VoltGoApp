@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 
 export default function CreditCard({navigation}) {
   return (
@@ -18,7 +18,7 @@ export default function CreditCard({navigation}) {
         {/* Logo */}
         <Image
           style={styles.image}
-          source={require("../../assets/logoVoltgo.png")}
+          source={require("../../../assets/logoVoltgo.png")}
         />
         {/* Info */}
         <View style={styles.info}>
@@ -29,15 +29,6 @@ export default function CreditCard({navigation}) {
         </View>
         {/* KrediKartı */}
         <View style={styles.ccContainer}>
-          <View>
-            <Text style={styles.inputText} allowFontScaling={false}>
-              Kart İsmi:
-            </Text>
-            <TextInput
-              placeholder="Karta Vermek İstediğiniz İsim"
-              style={styles.input}
-            />
-          </View>
           <View>
             <Text style={styles.inputText} allowFontScaling={false}>
               Adınız:

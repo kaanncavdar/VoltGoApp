@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../constans/config";
 
 export default function FirstScreen({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <Image
         style={styles.image}
-        source={require("../assets/logoVoltgo.png")}
+        source={require("../../assets/logoVoltgo.png")}
       />
       {/* <Login /> */}
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -41,7 +41,7 @@ export default function FirstScreen({navigation}) {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("CreditCard")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Deneme")}>
         <View style={styles.guestContainer}>
           <Text style={styles.guestText1} allowFontScaling={false}>
             Misafir Girişi _____________________________

@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import {ScrollView} from "react-native-gesture-handler";
 
 export default function NewUser({navigation}) {
@@ -23,7 +23,7 @@ export default function NewUser({navigation}) {
       <ScrollView>
         <Image
           style={styles.image}
-          source={require("../../assets/logoVoltgo.png")}
+          source={require("../../../assets/logoVoltgo.png")}
         />
         <View style={styles.info}>
           <Text style={styles.infoText} allowFontScaling={false}>

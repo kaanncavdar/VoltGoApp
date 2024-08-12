@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../constans/config";
 
 export default function Login({navigation}) {
   return (
@@ -18,7 +18,7 @@ export default function Login({navigation}) {
         {/* Logo */}
         <Image
           style={styles.image}
-          source={require("../assets/logoVoltgo.png")}
+          source={require("../../assets/logoVoltgo.png")}
         />
         <View style={styles.textContainer}>
           <Text style={styles.text} allowFontScaling={false}>

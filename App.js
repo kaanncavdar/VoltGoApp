@@ -11,8 +11,10 @@ import {
   PersonID,
   Choose,
   Tckn,
-  CreditCard
-} from "./src";
+  CreditCard,
+  Deneme,
+  Corporate
+} from "./src/index";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,8 +83,26 @@ function App() {
             }}
           />
           <Stack.Screen
+            name="Corporate"
+            component={Corporate}
+            options={{
+              headerTintColor: "#ffffff",
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: ""
+            }}
+          />
+          <Stack.Screen
             name="CreditCard"
             component={CreditCard}
+            options={{
+              headerTintColor: "#ffffff",
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: ""
+            }}
+          />
+          <Stack.Screen
+            name="Deneme"
+            component={Deneme}
             options={{
               headerTintColor: "#ffffff",
               headerStyle: {backgroundColor: "#000000"},

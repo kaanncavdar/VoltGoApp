@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import {PhoneHeight, PhoneWidth} from "../../constans/config";
+import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 
 export default function Password({navigation}) {
   const [password, setPassword] = useState("");
@@ -32,7 +32,7 @@ export default function Password({navigation}) {
       <ScrollView>
         <Image
           style={styles.image}
-          source={require("../../assets/logoVoltgo.png")}
+          source={require("../../../assets/logoVoltgo.png")}
         />
         <View style={styles.info}>
           <Text style={styles.infoText} allowFontScaling={false}>
