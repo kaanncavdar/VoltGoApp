@@ -3,12 +3,12 @@ import {View, Text, StyleSheet} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import {SafeAreaView} from "react-native-safe-area-context";
 
-function Deneme() {
+function Profile() {
   return (
-    <SafeAreaView style={styles.deneme}>
+    <SafeAreaView style={styles.home}>
       <ScrollView>
         <View>
-          <Text style={styles.denemeText}>
+          <Text style={styles.homeText}>
             Bu sayfaya geldiyseniz görmek istediğiniz sayfa henüz yapım
             aşamasında demektir. Daha sonra tekrar deneyiniz.
           </Text>
@@ -19,17 +19,17 @@ function Deneme() {
 }
 
 const styles = StyleSheet.create({
-  deneme: {
+  home: {
     flex: 1,
     backgroundColor: "#000000",
     justifyContent: "center",
     alignItems: "center"
   },
-  denemeText: {
+  homeText: {
     color: "#ffffff",
     fontSize: 24,
     textAlign: "center"
   }
 });
 
-export default Deneme;
+export default Profile;

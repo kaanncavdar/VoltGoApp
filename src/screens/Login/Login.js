@@ -33,7 +33,7 @@ export default function Login({navigation}) {
           <Text style={styles.text} allowFontScaling={false}>
             Şifre
           </Text>
-          <TextInput placeholder="Şifre" style={styles.input} />
+          <TextInput placeholder="Şifre" style={styles.input} secureTextEntry />
         </View>
         <View style={styles.loginContainer}>
           <TouchableOpacity

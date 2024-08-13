@@ -14,7 +14,7 @@ import {
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import {Checkbox} from "react-native-paper";
 
-export default function Tckn({navigation}) {
+export default function Individual({navigation}) {
   //şehirler
   // {label: "Adana", value: "adana"},
   // {label: "Adıyaman", value: "adiyaman"},
@@ -118,7 +118,9 @@ export default function Tckn({navigation}) {
             style={styles.button}
             onPress={() => navigation.navigate("CreditCard")}
           >
-            <Text style={styles.buttonText} allowFontScaling={false}>Devam et</Text>
+            <Text style={styles.buttonText} allowFontScaling={false}>
+              Devam et
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

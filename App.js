@@ -10,12 +10,12 @@ import {
   Password,
   PersonID,
   Choose,
-  Tckn,
+  Individual,
   CreditCard,
   Deneme,
   Corporate
 } from "./src/index";
-
+import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -74,8 +74,8 @@ function App() {
             }}
           />
           <Stack.Screen
-            name="Tckn"
-            component={Tckn}
+            name="Individual"
+            component={Individual}
             options={{
               headerTintColor: "#ffffff",
               headerStyle: {backgroundColor: "#000000"},
@@ -116,6 +116,20 @@ function App() {
               headerTintColor: "#ffffff",
               headerStyle: {backgroundColor: "#000000"},
               headerTitle: "Deneme sayfası"
+            }}
+          />
+          <Stack.Screen
+            name="Station"
+            component={BottomTabNavigator}
+            options={{
+              headerTintColor: "#ffffff",
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: "",
+              headerLeft: () =>
+                "" >
+                {
+                  /*back button removed */
+                }
             }}
           />
         </Stack.Navigator>

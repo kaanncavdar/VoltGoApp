@@ -25,7 +25,7 @@ export default function Choose({navigation}) {
           </Text>
         </View>
         {/*Individual */}
-        <TouchableOpacity onPress={() => navigation.navigate("Tckn")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Individual")}>
           <View style={styles.individualContainer}>
             <Text style={styles.individualText1} allowFontScaling={false}>
               Bireysel Kullanıcı _____________________________
