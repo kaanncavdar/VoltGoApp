@@ -17,35 +17,35 @@ const BottomTabNavigator = () => (
         backgroundColor: "#000000",
         borderTopColor: "#000000",
         height: PhoneHeight * 0.1,
-        display: route.name === "Stations" ? "flex" : "none" // Yalnızca 'Stations' ekranında görünür
+        display: route.name === "Stations" ? "flex" : "none" // Display only Stations screen
       },
       tabBarLabelStyle: {
-        fontSize: 0 // İsimlerin gözükmemesi için 0 yapıyoruz
+        fontSize: 0 // For not displaying the labels
       },
       tabBarIcon: ({color, size}) => {
         let iconName;
         switch (route.name) {
           case "Stations":
-            iconName = "home"; // Ev ikonu
+            iconName = "home";
             return <Icon name={iconName} size={size * 1.5} color="#ffffff" />;
           case "Help":
-            iconName = "headset"; // Kulaklık ikonu
+            iconName = "headset";
             return <Icon name={iconName} size={size * 1.5} color="#ffffff" />;
           case "Home":
             return (
               <Image
-                source={require("../assets/voltgoIcon.png")} // Resim yolu
+                source={require("../assets/voltgoIcon.png")}
                 style={{
                   width: size * 3,
                   height: size * 3
-                }} // Resmi büyütmek için size * 1.5
+                }}
               />
             );
           case "Notifications":
-            iconName = "notifications"; // Çan ikonu
+            iconName = "notifications";
             return <Icon name={iconName} size={size * 1.5} color="#ffffff" />;
           case "Profile":
-            iconName = "person"; // Kişi ikonu
+            iconName = "person";
             return <Icon name={iconName} size={size * 1.5} color="#ffffff" />;
           default:
             return null;

@@ -7,11 +7,26 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  FlatList,
+  ImageBackground
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import StationsData from "../../../data/StationsData";
 
 export default function Station({navigation}) {
+  const renderItem = ({item}) => (
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate("Deneme")}>
+        <ImageBackground source={{uri: item.image}} style={styles.image}>
+          <View style={styles.stationText}>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.distance}>{item.distance}</Text>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
+    </View>
+  );
   return (
     <SafeAreaView style={styles.container}>
       {/*Search Bar */}
@@ -21,10 +36,26 @@ export default function Station({navigation}) {
       {/*AC Stations */}
       <View style={styles.StationsContainer}>
         <Text style={styles.headerText}>AC İstasyonları</Text>
+        <FlatList
+          data={StationsData}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.stationList}
+        />
       </View>
       {/*DC Stations */}
       <View style={styles.StationsContainer}>
         <Text style={styles.headerText}>DC İstasyonları</Text>
+        <FlatList
+          data={StationsData}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.stationList}
+        />
       </View>
     </SafeAreaView>
   );
@@ -53,10 +84,35 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: "center",
     width: PhoneWidth * 0.95,
-    height: PhoneHeight * 0.2
+    height: PhoneHeight
   },
   headerText: {
     color: "#ffffff",
     fontSize: 25
+  },
+  itemContainer: {
+    flexDirection: "horizontal",
+    padding: 10
+  },
+  image: {
+    width: PhoneHeight * 0.2,
+    height: PhoneHeight * 0.25,
+    marginRight: 10,
+    borderRadius: 20
+  },
+  stationText: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    padding: 10
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#ffffff"
+  },
+  distance: {
+    fontSize: 14,
+    color: "#ffffff"
   }
 });
