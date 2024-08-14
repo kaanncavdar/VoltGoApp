@@ -1,17 +1,42 @@
 import React from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, Linking, TouchableOpacity} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import Icon from "react-native-vector-icons/Ionicons";
 
 function Help() {
+  // Phone Press
+  const handlePhonePress = () => {
+    Linking.openURL("tel:4448587");
+  };
+
+  // Address Press
+  const openMap = () => {
+    const url = "https://maps.app.goo.gl/HQYn7CbPsBwjSHtx8";
+    Linking.openURL(url).catch(err => console.error("Harita açılamadı:", err));
+  };
+
+  // E-mail Press
+  const sendEmail = () => {
+    const email = "info@voltgo.com.tr";
+    const subject = "Konu Başlığı";
+    const body = "Mesaj içeriği";
+    const url = `mailto:${email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(url).catch(err =>
+      console.error("Email gönderimi başarısız oldu:", err)
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.boxContainer}>
           {/* Phone Number */}
-          <View style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={handlePhonePress}>
             <View style={styles.row}>
               <View style={styles.icon}>
                 <Icon name="call" size={45} color="#63b32e" />
@@ -21,9 +46,9 @@ function Help() {
                 <Text style={styles.titleContent}>444 8587</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           {/* Address */}
-          <View style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={openMap}>
             <View style={styles.row}>
               <View style={styles.icon}>
                 <Icon name="location" size={45} color="#63b32e" />
@@ -35,7 +60,7 @@ function Help() {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           {/* Operator */}
           <View style={styles.box}>
             <View style={styles.row}>
@@ -49,7 +74,7 @@ function Help() {
             </View>
           </View>
           {/* E-mail */}
-          <View style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={sendEmail}>
             <View style={styles.row}>
               <View style={styles.icon}>
                 <Icon name="mail" size={45} color="#63b32e" />
@@ -59,7 +84,7 @@ function Help() {
                 <Text style={styles.titleContent}>info@voltgo.com.tr</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
