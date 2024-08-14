@@ -17,7 +17,15 @@ import StationsData from "../../../data/StationsData";
 export default function Station({navigation}) {
   const renderItem = ({item}) => (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate("Deneme")}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("StationDetail", {
+            name: item.name,
+            image: item.image,
+            distance: item.distance
+          })
+        }
+      >
         <ImageBackground source={{uri: item.image}} style={styles.image}>
           <View style={styles.stationText}>
             <Text style={styles.name}>{item.name}</Text>
@@ -35,7 +43,9 @@ export default function Station({navigation}) {
       </View>
       {/*AC Stations */}
       <View style={styles.StationsContainer}>
-        <Text style={styles.headerText}>AC İstasyonları</Text>
+        <Text style={styles.headerText} allowFontScaling={false}>
+          AC İstasyonları
+        </Text>
         <FlatList
           data={StationsData}
           renderItem={renderItem}
@@ -47,7 +57,9 @@ export default function Station({navigation}) {
       </View>
       {/*DC Stations */}
       <View style={styles.StationsContainer}>
-        <Text style={styles.headerText}>DC İstasyonları</Text>
+        <Text style={styles.headerText} allowFontScaling={false}>
+          DC İstasyonları
+        </Text>
         <FlatList
           data={StationsData}
           renderItem={renderItem}
@@ -99,7 +111,7 @@ const styles = StyleSheet.create({
     height: PhoneHeight * 0.25,
     marginRight: 10,
     borderRadius: 20,
-    overflow: "hidden" 
+    overflow: "hidden"
   },
   stationText: {
     position: "absolute",

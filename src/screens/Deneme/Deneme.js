@@ -8,7 +8,7 @@ function Deneme() {
     <SafeAreaView style={styles.deneme}>
       <ScrollView>
         <View>
-          <Text style={styles.denemeText}>
+          <Text style={styles.denemeText} allowFontScaling={false}>
             Bu sayfaya geldiyseniz görmek istediğiniz sayfa henüz yapım
             aşamasında demektir. Daha sonra tekrar deneyiniz.
           </Text>

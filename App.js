@@ -13,7 +13,8 @@ import {
   Individual,
   CreditCard,
   Deneme,
-  Corporate
+  Corporate,
+  StationDetail
 } from "./src/index";
 import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
 const Stack = createNativeStackNavigator();
@@ -126,6 +127,15 @@ function App() {
               headerStyle: {backgroundColor: "#000000"},
               headerTitle: "",
               headerLeft: () => null
+            }}
+          />
+          <Stack.Screen
+            name="StationDetail"
+            component={StationDetail} // Add StationDetail here
+            options={{
+              headerTintColor: "#ffffff",
+              headerStyle: {backgroundColor: "#000000"},
+              headerTitle: "Station Detail"
             }}
           />
         </Stack.Navigator>

@@ -42,8 +42,12 @@ function Help() {
                 <Icon name="call" size={45} color="#63b32e" />
               </View>
               <View style={styles.column}>
-                <Text style={styles.titleHeader}>Telefon Numarası</Text>
-                <Text style={styles.titleContent}>444 8587</Text>
+                <Text style={styles.titleHeader} allowFontScaling={false}>
+                  Telefon Numarası
+                </Text>
+                <Text style={styles.titleContent} allowFontScaling={false}>
+                  444 8587
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -54,8 +58,10 @@ function Help() {
                 <Icon name="location" size={45} color="#63b32e" />
               </View>
               <View style={styles.column}>
-                <Text style={styles.titleHeader}>Adres</Text>
-                <Text style={styles.titleContent}>
+                <Text style={styles.titleHeader} allowFontScaling={false}>
+                  Adres
+                </Text>
+                <Text style={styles.titleContent} allowFontScaling={false}>
                   Acıdere Osb Mah. Çanakkale Cad. No:15 Sarıçam/ADANA
                 </Text>
               </View>
@@ -68,8 +74,12 @@ function Help() {
                 <Icon name="megaphone" size={45} color="#63b32e" />
               </View>
               <View style={styles.column}>
-                <Text style={styles.titleHeader}>Operatör</Text>
-                <Text style={styles.titleContent}>VOLTGO</Text>
+                <Text style={styles.titleHeader} allowFontScaling={false}>
+                  Operatör
+                </Text>
+                <Text style={styles.titleContent} allowFontScaling={false}>
+                  VOLTGO
+                </Text>
               </View>
             </View>
           </View>
@@ -80,8 +90,12 @@ function Help() {
                 <Icon name="mail" size={45} color="#63b32e" />
               </View>
               <View style={styles.column}>
-                <Text style={styles.titleHeader}>E-mail</Text>
-                <Text style={styles.titleContent}>info@voltgo.com.tr</Text>
+                <Text style={styles.titleHeader} allowFontScaling={false}>
+                  E-mail
+                </Text>
+                <Text style={styles.titleContent} allowFontScaling={false}>
+                  info@voltgo.com.tr
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -137,7 +151,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   titleContent: {
-    fontSize: 18,
+    fontSize: 21,
     color: "#000"
   }
 });
