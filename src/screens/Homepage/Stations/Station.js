@@ -22,7 +22,11 @@ export default function Station({navigation}) {
           navigation.navigate("StationDetail", {
             name: item.name,
             image: item.image,
-            distance: item.distance
+            distance: item.distance,
+            status: item.status,
+            location: item.location,
+            mapLocation: item.mapLocation,
+            price: item.price
           })
         }
       >
