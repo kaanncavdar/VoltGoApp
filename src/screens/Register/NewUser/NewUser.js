@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import {ScrollView} from "react-native-gesture-handler";
+import axios from "axios";
 
 export default function NewUser({navigation}) {
   const [phoneNumber, setPhoneNumber] = useState("");

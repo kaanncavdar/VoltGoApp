@@ -125,11 +125,7 @@ function App() {
               headerTintColor: "#ffffff",
               headerStyle: {backgroundColor: "#000000"},
               headerTitle: "",
-              headerLeft: () =>
-                "" >
-                {
-                  /*back button removed */
-                }
+              headerLeft: () => null
             }}
           />
         </Stack.Navigator>

@@ -98,11 +98,14 @@ const styles = StyleSheet.create({
     width: PhoneHeight * 0.2,
     height: PhoneHeight * 0.25,
     marginRight: 10,
-    borderRadius: 20
+    borderRadius: 20,
+    overflow: "hidden" 
   },
   stationText: {
     position: "absolute",
     bottom: 0,
+    width: "100%",
+    height: "50%",
     backgroundColor: "rgba(0,0,0,0.5)",
     padding: 10
   },
