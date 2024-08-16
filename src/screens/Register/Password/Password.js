@@ -107,7 +107,10 @@ export default function Password({navigation}) {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[
+              styles.buttonContainer,
+              {backgroundColor: passwordsMatch ? "#63b32e" : "#a0a0a0"}
+            ]}
             onPress={() => navigation.navigate("PersonID")}
             disabled={
               !isSixCharacters || !hasNumber || !hasUpperCase || !passwordsMatch
@@ -184,7 +187,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: PhoneWidth * 0.4,
     height: PhoneHeight * 0.06,
-    backgroundColor: "#63b32e",
     alignSelf: "center",
     borderRadius: 15,
     justifyContent: "center",
