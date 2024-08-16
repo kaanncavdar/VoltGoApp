@@ -36,20 +36,33 @@ export default function Login({navigation}) {
           <TextInput placeholder="Şifre" style={styles.input} secureTextEntry />
         </View>
         <View style={styles.loginContainer}>
+          {/* Login Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Station")}
           >
             <Text style={styles.buttonText} allowFontScaling={false}>
               Giriş Yap
             </Text>
           </TouchableOpacity>
-          <Text style={styles.usertext} allowFontScaling={false}>
-            Şifremi Unuttum
-          </Text>
-          <Text style={styles.usertext} allowFontScaling={false}>
-            Kayıt ol
-          </Text>
+          {/* New password */}
+          <TouchableOpacity
+            style={styles.buttonColorless}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <Text style={styles.usertext} allowFontScaling={false}>
+              Şifremi Unuttum
+            </Text>
+          </TouchableOpacity>
+          {/* Register */}
+          <TouchableOpacity
+            style={styles.buttonColorless}
+            onPress={() => navigation.navigate("NewUser")}
+          >
+            <Text style={styles.usertext} allowFontScaling={false}>
+              Kayıt ol
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -95,6 +108,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10
+  },
+  buttonColorless: {
+    width: PhoneWidth * 0.4,
+    height: PhoneHeight * 0.06,
+    backgroundColor: "#000000",
+    alignSelf: "center",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center"
   },
   buttonText: {
     fontFamily: "Roboto",
