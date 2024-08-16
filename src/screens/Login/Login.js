@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Image,
   SafeAreaView,
@@ -12,6 +12,11 @@ import {
 import {PhoneHeight, PhoneWidth} from "../../constans/config";
 
 export default function Login({navigation}) {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+
+  const isButtonEnabled = phoneNumber.length === 10 && password.length >= 6;
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -29,17 +34,29 @@ export default function Login({navigation}) {
             style={styles.input}
             keyboardType="numeric"
             maxLength={10}
+            onChangeText={text => setPhoneNumber(text)}
+            value={phoneNumber}
           />
           <Text style={styles.text} allowFontScaling={false}>
             Şifre
           </Text>
-          <TextInput placeholder="Şifre" style={styles.input} secureTextEntry />
+          <TextInput
+            placeholder="Şifre"
+            style={styles.input}
+            secureTextEntry
+            onChangeText={text => setPassword(text)}
+            value={password}
+          />
         </View>
         <View style={styles.loginContainer}>
           {/* Login Button */}
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Station")}
+            style={[
+              styles.button,
+              {backgroundColor: isButtonEnabled ? "#63b32e" : "#a0a0a0"}
+            ]}
+            onPress={() => isButtonEnabled && navigation.navigate("Station")}
+            disabled={!isButtonEnabled}
           >
             <Text style={styles.buttonText} allowFontScaling={false}>
               Giriş Yap
