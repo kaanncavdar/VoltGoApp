@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {Alert} from "react-native";
 import {
   Image,
   SafeAreaView,
@@ -10,12 +11,19 @@ import {
   View
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import {ApiManager} from "../../../index";
 
-export default function PersonID({navigation}) {
+export default function PersonID({route, navigation}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [birthYear, setBirthYear] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const {token} = route.params || {};
+    setToken(token);
+  }, [route.params]);
 
   const handleChangeFirstName = text => setFirstName(text);
   const handleChangeLastName = text => setLastName(text);
@@ -30,6 +38,32 @@ export default function PersonID({navigation}) {
       email.includes("@") &&
       birthYear.length === 4
     );
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await ApiManager.post(
+        "/auth/email-and-birthYear-Approved",
+        {firstName, lastName, email, birthYear},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log("API Yanıtı:", response);
+
+      if (response.status === 200) {
+        navigation.navigate("Choose");
+        console.log("Token:", token);
+      } else {
+        Alert.alert("Hata", "Bir hata oluştu. Lütfen tekrar deneyin.");
+      }
+    } catch (error) {
+      console.log("Hata:", error.response?.data || error);
+      Alert.alert("Hata", error.response?.data?.message || "Bir hata oluştu.");
+    }
   };
 
   return (
@@ -97,11 +131,7 @@ export default function PersonID({navigation}) {
               styles.button,
               {backgroundColor: isFormValid() ? "#63b32e" : "#ccc"}
             ]}
-            onPress={() => {
-              if (isFormValid()) {
-                navigation.navigate("Choose");
-              }
-            }}
+            onPress={isFormValid() ? handleSubmit : null} // Form geçerliyse API'ye gönder
             disabled={!isFormValid()}
           >
             <Text style={styles.buttonText}>İleri</Text>

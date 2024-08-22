@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import StationsData from "../../../data/StationsData";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Station({navigation}) {
   const renderItem = ({item}) => (
@@ -26,7 +27,11 @@ export default function Station({navigation}) {
             status: item.status,
             location: item.location,
             mapLocation: item.mapLocation,
-            price: item.price
+            price: item.price,
+            power: item.power,
+            sockets: item.sockets,
+            chargeTime: item.chargeTime,
+            socketCount: item.socketCount
           })
         }
       >

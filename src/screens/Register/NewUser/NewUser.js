@@ -1,6 +1,5 @@
-//SMS kontrolü yapmıyoruz
-//Telefon numarası zaten varsa hata vermesi gerekiyor ama henüz kontrol etmiyoruz
 import React, {useState} from "react";
+import {Alert} from "react-native";
 import {
   Image,
   SafeAreaView,
@@ -12,12 +11,34 @@ import {
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 import {ScrollView} from "react-native-gesture-handler";
-import axios from "axios";
+import {ApiManager} from "../../../index";
 
 export default function NewUser({navigation}) {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [token, setToken] = useState("");
 
   const isButtonEnabled = phoneNumber.length === 10;
+
+  const handlePhoneNumberSubmit = async () => {
+    try {
+      const response = await ApiManager.post("/auth/phone-Number-approved", {
+        phoneNumber: `+90${phoneNumber}`
+      });
+
+      if (response.status === 200) {
+        const {token} = response.data.data;
+        console.log("Token:", token);
+        setToken(token);
+        navigation.navigate("Password", {token});
+      } else {
+        Alert.alert("Hata", "Bir hata oluştu. Lütfen tekrar deneyin.");
+      }
+    } catch (error) {
+      console.log(error);
+      let errorMessage = error.response?.data?.message;
+      Alert.alert("Hata", errorMessage);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +73,7 @@ export default function NewUser({navigation}) {
               styles.sendButton,
               {backgroundColor: isButtonEnabled ? "#63b32e" : "#a0a0a0"}
             ]}
-            onPress={() => isButtonEnabled && navigation.navigate("Password")}
+            onPress={isButtonEnabled ? handlePhoneNumberSubmit : null}
             disabled={!isButtonEnabled}
           >
             <Text style={styles.sendButtonText} allowFontScaling={false}>

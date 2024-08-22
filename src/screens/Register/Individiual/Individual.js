@@ -1,7 +1,6 @@
 // Tc dısında tam kısım yok, adres kısmını text olarak girdim görüntü için, şehirleri ve o şehir display olduğunda gözükecek ilçeleri listeyemedim. Adres box'ı düzeltilmeli. Çalışan bir checkbox yazamadım. Şu noktada bir buton yazıp sonraki sayfayı bitirip buraya geri döneceğim.
 import React, {useState} from "react";
 import {
-  Button,
   Image,
   SafeAreaView,
   ScrollView,
@@ -9,34 +8,167 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Modal,
+  FlatList
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
-import {Checkbox} from "react-native-paper";
+
+const cities = [
+  {
+    id: "1",
+    name: "İstanbul",
+    districts: [
+      "Adalar",
+      "Arnavutköy",
+      "Ataşehir",
+      "Avcılar",
+      "Bağcılar",
+      "Bahçelievler",
+      "Bakırköy",
+      "Başakşehir",
+      "Bayrampaşa",
+      "Beşiktaş",
+      "Beykoz",
+      "Beylikdüzü",
+      "Beyoğlu",
+      "Büyükçekmece",
+      "Çatalca",
+      "Çekmeköy",
+      "Esenler",
+      "Esenyurt",
+      "Eyüpsultan",
+      "Fatih",
+      "Gaziosmanpaşa",
+      "Güngören",
+      "Kadıköy",
+      "Kağıthane",
+      "Kartal",
+      "Küçükçekmece",
+      "Maltepe",
+      "Pendik",
+      "Sancaktepe",
+      "Sarıyer",
+      "Silivri",
+      "Sultanbeyli",
+      "Sultangazi",
+      "Şile",
+      "Şişli",
+      "Tuzla",
+      "Ümraniye",
+      "Üsküdar",
+      "Zeytinburnu"
+    ]
+  },
+  {
+    id: "2",
+    name: "Ankara",
+    districts: [
+      "Akyurt",
+      "Altındağ",
+      "Ayaş",
+      "Bala",
+      "Beypazarı",
+      "Çamlıdere",
+      "Çankaya",
+      "Çubuk",
+      "Elmadağ",
+      "Etimesgut",
+      "Evren",
+      "Gölbaşı",
+      "Güdül",
+      "Haymana",
+      "Kahramankazan",
+      "Kalecik",
+      "Keçiören",
+      "Kızılcahamam",
+      "Mamak",
+      "Nallıhan",
+      "Polatlı",
+      "Pursaklar",
+      "Sincan",
+      "Şereflikoçhisar",
+      "Yenimahalle"
+    ]
+  },
+  {
+    id: "3",
+    name: "Adana",
+    districts: [
+      "Seyhan",
+      "Yüreğir",
+      "Sarıçam",
+      "Çukurova",
+      "Karaisalı",
+      "Karataş",
+      "Pozantı",
+      "Saimbeyli",
+      "Tufanbeyli",
+      "Yumurtalık",
+      "Ceyhan",
+      "Feke",
+      "İmamoğlu",
+      "Kozan"
+    ]
+  },
+  {
+    id: "4",
+    name: "Adıyaman",
+    districts: ["Kahta", "Gölbaşı", "Besni", "Samsat", "Gerger", "Tut"]
+  },
+  {
+    id: "5",
+    name: "Afyon",
+    districts: [
+      "Afyonkarahisar Merkez",
+      "Sandıklı",
+      "Dinar",
+      "Bolvadin",
+      "Çay",
+      "İscehisar",
+      "Emirdağ",
+      "Sultandağı",
+      "Şuhut"
+    ]
+  }
+];
 
 export default function Individual({navigation}) {
-  //şehirler
-  // {label: "Adana", value: "adana"},
-  // {label: "Adıyaman", value: "adiyaman"},
-  // {label: "Ankara", value: "ankara"}
+  const [cityModalVisible, setCityModalVisible] = useState(false);
+  const [districtModalVisible, setDistrictModalVisible] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("Şehir Seçiniz");
+  const [selectedDistrict, setSelectedDistrict] = useState("İlçe Seçiniz");
+  const [currentDistricts, setCurrentDistricts] = useState([]);
 
-  //Adana ilçeleri
-  // {label: "Seyhan", value: "seyhan"},
-  // {label: "Yüreğir", value: "yuregir"},
-  // {label: "Sarıçam", value: "saricam"},
-  // {label: "Çukurova", value: "cukurova"},
-  // {label: "Karaisalı", value: "karaisali"},
-  // {label: "Karataş", value: "karatas"},
-  // {label: "Pozantı", value: "pozanti"},
-  // {label: "Saimbeyli", value: "saimbeyli"},
-  // {label: "Tufanbeyli", value: "tufanbeyli"},
-  // {label: "Yumurtalık", value: "yumurtalik"},
-  // {label: "Ceyhan", value: "ceyhan"},
-  // {label: "Feke", value: "feke"},
-  // {label: "İmamoğlu", value: "imamoglu"},
-  // {label: "Kozan", value: "kozan"}
+  const handleSelectCity = (city, districts) => {
+    setSelectedCity(city);
+    setCurrentDistricts(districts);
+    setCityModalVisible(false);
+    setDistrictModalVisible(true); // Şehir seçildiğinde ilçe modalını aç
+  };
 
-  const [checked, setChecked] = React.useState(false);
+  const handleSelectDistrict = district => {
+    setSelectedDistrict(district);
+    setDistrictModalVisible(false);
+  };
+
+  const renderCityItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => handleSelectCity(item.name, item.districts)}
+    >
+      <Text style={styles.text}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderDistrictItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => handleSelectDistrict(item)}
+    >
+      <Text style={styles.text}>{item}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,18 +206,61 @@ export default function Individual({navigation}) {
           <View style={styles.input}>
             <Text style={styles.inInput}>Türkiye</Text>
           </View>
+          {/* Şehir*/}
           <Text style={styles.addressText} allowFontScaling={false}>
             Şehir*
           </Text>
-          <View style={styles.input}>
-            <Text style={styles.inInput}>Adana</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.input}
+            onPress={() => setCityModalVisible(true)}
+          >
+            <Text style={styles.inInput}>{selectedCity}</Text>
+          </TouchableOpacity>
+          {/* İlçe*/}
           <Text style={styles.addressText} allowFontScaling={false}>
             İlçe*
           </Text>
-          <View style={styles.input}>
-            <Text style={styles.inInput}>Seyhan</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.input}
+            onPress={() => setDistrictModalVisible(true)}
+            disabled={!currentDistricts.length} // İlçe seçimi şehir seçildiğinde aktif olur
+          >
+            <Text style={styles.inInput}>{selectedDistrict}</Text>
+          </TouchableOpacity>
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={cityModalVisible}
+            onRequestClose={() => setCityModalVisible(!cityModalVisible)}
+          >
+            <View style={styles.modalView}>
+              <FlatList
+                data={cities}
+                renderItem={renderCityItem}
+                keyExtractor={item => item.id}
+              />
+            </View>
+          </Modal>
+
+          {/* İlçe*/}
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={districtModalVisible}
+            onRequestClose={() =>
+              setDistrictModalVisible(!districtModalVisible)
+            }
+          >
+            <View style={styles.modalView}>
+              <FlatList
+                data={currentDistricts}
+                renderItem={renderDistrictItem}
+                keyExtractor={item => item}
+              />
+            </View>
+          </Modal>
         </View>
         {/* Mahalle sokak*/}
         <View detailAddressContainer>
@@ -193,6 +368,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#000000",
     fontWeight: "bold"
+  },
+  modalView: {
+    flex: 1,
+    marginTop: 50,
+    marginHorizontal: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.9)", // Hafif şeffaf bir arka plan
+    borderRadius: 10, // Kenarları yuvarlak
+    padding: 20 // İç boşluk
+  },
+
+  item: {
+    backgroundColor: "#ffffff", // Elemanların arka planı beyaz
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1, // Alt kenar çizgisi
+    borderBottomColor: "#E0E0E0", // Çizgi rengi
+    flexDirection: "row",
+    alignItems: "center", // İkon ve metni ortala
+    justifyContent: "space-between" // İkonu sağa metni sola yasla
+  },
+  text: {
+    fontSize: 18,
+    color: "#333", // Metin rengi
+    fontWeight: "bold" // Yazı tipi kalınlığı
   },
   detailAddressContainer: {
     height: PhoneHeight * 0.15

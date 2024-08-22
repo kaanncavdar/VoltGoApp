@@ -1,8 +1,6 @@
-// Koşulların sağlandığını gösteren css'ler hariç fonskiyon çalışıyor
-//İlk halinde iki inputta bos olduğu için şifreler uyuşuyor yazısı çıkıyor bu yüzden underline yaptığımda yeşil gözüküyor onu kontrol et
-//tekrar bak buraya önemli
 import React, {useState} from "react";
 import {
+  Alert,
   Image,
   SafeAreaView,
   ScrollView,
@@ -13,19 +11,48 @@ import {
   View
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import axios from "axios";
 
-export default function Password({navigation}) {
+export default function Password({route, navigation}) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const isSixCharacters = password.length >= 6;
-  const nullPassword = password.length === 0;
   const hasNumber = /\d/.test(password);
   const hasUpperCase = /[A-Z]/.test(password);
   const passwordsMatch =
     password === confirmPassword &&
     password.length > 0 &&
     confirmPassword.length > 0;
+
+  const token = route.params?.token;
+
+  const handlePasswordSubmit = async () => {
+    if (!passwordsMatch) {
+      Alert.alert("Error", "Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://147.182.221.195:3000/auth/check-password",
+        {
+          password,
+          confirmPassword,
+          token
+        }
+      );
+
+      if (response.status === 200) {
+        navigation.navigate("PersonID", {token});
+      } else {
+        Alert.alert("Error", "Failed to set password. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "An error occurred. Please try again.");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,41 +78,19 @@ export default function Password({navigation}) {
               value={password}
               onChangeText={setPassword}
             />
-            <View style={styles.row}>
-              <View>
-                <Text style={styles.notificationText} allowFontScaling={false}>
-                  En az bir sayı
-                </Text>
-                <View
-                  style={[
-                    styles.underline,
-                    {backgroundColor: passwordsMatch ? "#63b32e" : "red"}
-                  ]}
-                />
-              </View>
-              <View>
-                <Text style={styles.notificationText} allowFontScaling={false}>
-                  En az bir büyük harf
-                </Text>
-                <View
-                  style={[
-                    styles.underline,
-                    {backgroundColor: passwordsMatch ? "#63b32e" : "red"}
-                  ]}
-                />
-              </View>
-              <View>
-                <Text style={styles.notificationText} allowFontScaling={false}>
-                  En az 6 karakter
-                </Text>
-                <View
-                  style={[
-                    styles.underline,
-                    {backgroundColor: passwordsMatch ? "#63b32e" : "red"}
-                  ]}
-                />
-              </View>
-            </View>
+            <Text
+              style={[
+                styles.notificationText,
+                {
+                  color:
+                    hasNumber && hasUpperCase && isSixCharacters
+                      ? "#63b32e"
+                      : "red"
+                }
+              ]}
+            >
+              Şifre güvenliği yeterli
+            </Text>
           </View>
           <View>
             <Text style={styles.passwordText} allowFontScaling={false}>
@@ -98,9 +103,12 @@ export default function Password({navigation}) {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
-          </View>
-          <View>
-            <Text style={styles.notificationText} allowFontScaling={false}>
+            <Text
+              style={[
+                styles.notificationText,
+                {color: passwordsMatch ? "#63b32e" : "red"}
+              ]}
+            >
               {passwordsMatch ? "Şifreler uyuşuyor" : "Şifreler uyuşmuyor"}
             </Text>
           </View>
@@ -111,7 +119,7 @@ export default function Password({navigation}) {
               styles.buttonContainer,
               {backgroundColor: passwordsMatch ? "#63b32e" : "#a0a0a0"}
             ]}
-            onPress={() => navigation.navigate("PersonID")}
+            onPress={handlePasswordSubmit}
             disabled={
               !isSixCharacters || !hasNumber || !hasUpperCase || !passwordsMatch
             }
