@@ -78,19 +78,41 @@ export default function Password({route, navigation}) {
               value={password}
               onChangeText={setPassword}
             />
+            <View style={styles.row}>
             <Text
               style={[
                 styles.notificationText,
                 {
-                  color:
-                    hasNumber && hasUpperCase && isSixCharacters
-                      ? "#63b32e"
-                      : "red"
+                  color: hasNumber ? "#63b32e" : "red"
                 }
               ]}
+              allowFontScaling={false}
             >
-              Şifre güvenliği yeterli
+              En az bir sayı
             </Text>
+            <Text
+              style={[
+                styles.notificationText,
+                {
+                  color: hasUpperCase ? "#63b32e" : "red"
+                }
+              ]}
+              allowFontScaling={false}
+            >
+              En az bir büyük harf
+            </Text>
+            <Text
+              style={[
+                styles.notificationText,
+                {
+                  color: isSixCharacters ? "#63b32e" : "red"
+                }
+              ]}
+              allowFontScaling={false}
+            >
+              En az 6 karakter
+            </Text>
+            </View>
           </View>
           <View>
             <Text style={styles.passwordText} allowFontScaling={false}>
