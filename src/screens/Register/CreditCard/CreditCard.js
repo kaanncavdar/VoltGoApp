@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Image,
   SafeAreaView,
@@ -10,8 +10,52 @@ import {
   View
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import axios from "axios";
 
 export default function CreditCard({navigation, route}) {
+  // const {token} = route.params;
+  const [usercardName, setUsercardName] = useState("");
+  const [creditCardName, setCreditCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDateMonth, setExpiryDateMonth] = useState("");
+  const [expiryDateYear, setExpiryDateYear] = useState("");
+  const [cvvCode, setCvvCode] = useState("");
+
+  const checkCardInfo = async () => {
+    try {
+      const response = await axios.post(
+        "http://yourapi.com/auth/check-card-infos",
+        {
+          usercardName,
+          creditCardName,
+          cardNumber,
+          expiryDateMonth,
+          expiryDateYear,
+          cvvCode
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Token ile doğrulama
+          }
+        }
+      );
+      if (response.data.success) {
+        Alert.alert("Başarılı", "Kart bilgileri başarıyla doğrulandı.");
+        navigation.navigate("NextScreen");
+      } else {
+        Alert.alert(
+          "Hata",
+          "Kart bilgileri doğrulanamadı. Lütfen bilgilerinizi kontrol edin."
+        );
+      }
+    } catch (error) {
+      console.error("API error:", error);
+      Alert.alert(
+        "Hata",
+        "Bir sorun oluştu. Lütfen daha sonra tekrar deneyin."
+      );
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,6 +81,8 @@ export default function CreditCard({navigation, route}) {
             <TextInput
               placeholder="Kartınıza vermek istediğiniz isim"
               style={styles.input}
+              value={usercardName}
+              onChangeText={setUsercardName}
             />
           </View>
           <View>
@@ -46,6 +92,8 @@ export default function CreditCard({navigation, route}) {
             <TextInput
               placeholder="Kart Üzerinde Yazan İsim/Soyisim"
               style={styles.input}
+              value={creditCardName}
+              onChangeText={setCreditCardName}
             />
           </View>
           <View>
@@ -57,6 +105,8 @@ export default function CreditCard({navigation, route}) {
               style={styles.input}
               keyboardType="numeric"
               maxLength={16}
+              value={cardNumber}
+              onChangeText={setCardNumber}
             />
           </View>
           <View style={styles.ccInfo}>
@@ -69,6 +119,8 @@ export default function CreditCard({navigation, route}) {
                 style={styles.inputCC}
                 keyboardType="numeric"
                 maxLength={2}
+                value={expiryDateMonth}
+                onChangeText={setExpiryDateMonth}
               />
             </View>
             <View>
@@ -80,6 +132,8 @@ export default function CreditCard({navigation, route}) {
                 style={styles.inputCC}
                 keyboardType="numeric"
                 maxLength={2}
+                value={expiryDateYear}
+                onChangeText={setExpiryDateYear}
               />
             </View>
             <View>
@@ -91,6 +145,8 @@ export default function CreditCard({navigation, route}) {
                 style={styles.inputCC}
                 keyboardType="numeric"
                 maxLength={3}
+                value={cvvCode}
+                onChangeText={setCvvCode}
               />
             </View>
           </View>
@@ -98,7 +154,7 @@ export default function CreditCard({navigation, route}) {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Login")}
+            onPress={checkCardInfo} // API çağrısı yapacak fonksiyonu tetikleme
           >
             <Text style={styles.buttonText} allowFontScaling={false}>
               Kaydet

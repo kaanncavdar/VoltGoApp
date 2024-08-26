@@ -1,5 +1,4 @@
-// Tc dısında tam kısım yok, adres kısmını text olarak girdim görüntü için, şehirleri ve o şehir display olduğunda gözükecek ilçeleri listeyemedim. Adres box'ı düzeltilmeli. Çalışan bir checkbox yazamadım. Şu noktada bir buton yazıp sonraki sayfayı bitirip buraya geri döneceğim.
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,9 +10,11 @@ import {
   View,
   Modal,
   FlatList,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import axios from "axios";
 
 const cities = [
   {
@@ -134,18 +135,23 @@ const cities = [
   }
 ];
 
-export default function Individual({navigation}) {
+export default function Corporate({ navigation, route }) {
+  const token = route.params?.token;  
   const [cityModalVisible, setCityModalVisible] = useState(false);
   const [districtModalVisible, setDistrictModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Şehir Seçiniz");
   const [selectedDistrict, setSelectedDistrict] = useState("İlçe Seçiniz");
   const [currentDistricts, setCurrentDistricts] = useState([]);
+  const [companyName, setCompanyName] = useState("");
+  const [taxNo, setTaxNo] = useState("");
+  const [taxPlaceName, setTaxPlaceName] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleSelectCity = (city, districts) => {
     setSelectedCity(city);
     setCurrentDistricts(districts);
     setCityModalVisible(false);
-    setDistrictModalVisible(true); // Şehir seçildiğinde ilçe modalını aç
+    setDistrictModalVisible(true); 
   };
 
   const handleSelectDistrict = district => {
@@ -171,6 +177,52 @@ export default function Individual({navigation}) {
     </TouchableOpacity>
   );
 
+  const checkTaxNumber = async () => {
+    try {
+      const response = await axios.post(
+        "http://147.182.221.195:3000/auth/check-tax-number",
+        {
+          companyName,
+          taxNo,
+          taxPlaceName,
+          country: "Türkiye",
+          city: selectedCity,
+          district: selectedDistrict,
+          address
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (response.status === 200) {
+        Alert.alert("Başarılı", "Vergi bilgileri başarıyla doğrulandı!");
+        navigation.navigate("CreditCard", {token});
+      } else {
+        Alert.alert("Hata", response.data.message);
+      }
+    } catch (error) {
+      Alert.alert("Hata", error.response?.data?.message || "Bir hata oluştu.");
+    }
+  };
+
+  const handleContinue = () => {
+    if (
+      !companyName ||
+      !taxNo ||
+      !taxPlaceName ||
+      selectedCity === "Şehir Seçiniz" ||
+      selectedDistrict === "İlçe Seçiniz" ||
+      !address
+    ) {
+      Alert.alert("Uyarı", "Lütfen tüm zorunlu alanları doldurun.");
+    } else {
+      checkTaxNumber();
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -191,9 +243,10 @@ export default function Individual({navigation}) {
           <Text style={styles.tcknText} allowFontScaling={false}>
             Şirket Adı
           </Text>
-          <TextInput
-            style={styles.input}
-          />
+          <TextInput 
+          style={styles.input}
+          value={companyName}
+          onChangeText={setCompanyName} />
         </View>
         {/* Tax Number */}
         <View style={styles.tckn}>
@@ -204,6 +257,8 @@ export default function Individual({navigation}) {
             style={styles.input}
             maxLength={10}
             keyboardType="numeric"
+            value={taxNo}
+            onChangeText={setTaxNo}
           />
         </View>
         {/* Tax Place*/}
@@ -211,9 +266,10 @@ export default function Individual({navigation}) {
           <Text style={styles.tcknText} allowFontScaling={false}>
             Vergi Dairesi*
           </Text>
-          <TextInput
-            style={styles.input}
-          />
+          <TextInput 
+          style={styles.input}
+          value={taxPlaceName}
+          onChangeText={setTaxPlaceName} />
         </View>
         {/* Adres alma inputu */}
         <View style={styles.addressContainer}>
@@ -281,14 +337,18 @@ export default function Individual({navigation}) {
         </View>
         {/* Mahalle sokak*/}
         <View detailAddressContainer>
-          <Text style={styles.addressText} allowFontScaling={false}>
-            Adres*
-          </Text>
-          <TextInput
-            placeholder="Mahalle, Sokak"
-            style={styles.detailAddress}
-          />
-        </View>
+            <Text style={styles.addressText} allowFontScaling={false}>
+              Adres*
+            </Text>
+            <TextInput
+              placeholder="Mahalle, Sokak"
+              style={styles.detailAddress}
+              value={address}
+              onChangeText={setAddress}
+              multiline={true}
+              textAlignVertical="top"
+            />
+          </View>
         {/* CheckBoxs */}
         {/* <View style={styles.checkBoxContainer}>
           <Checkbox
@@ -390,25 +450,25 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     marginHorizontal: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.9)", // Hafif şeffaf bir arka plan
-    borderRadius: 10, // Kenarları yuvarlak
-    padding: 20 // İç boşluk
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: 10,
+    padding: 20
   },
 
   item: {
-    backgroundColor: "#ffffff", // Elemanların arka planı beyaz
+    backgroundColor: "#ffffff", 
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderBottomWidth: 1, // Alt kenar çizgisi
-    borderBottomColor: "#E0E0E0", // Çizgi rengi
+    borderBottomWidth: 1, 
+    borderBottomColor: "#E0E0E0",
     flexDirection: "row",
-    alignItems: "center", // İkon ve metni ortala
-    justifyContent: "space-between" // İkonu sağa metni sola yasla
+    alignItems: "center", 
+    justifyContent: "space-between" 
   },
   text: {
     fontSize: 18,
-    color: "#333", // Metin rengi
-    fontWeight: "bold" // Yazı tipi kalınlığı
+    color: "#333", 
+    fontWeight: "bold" 
   },
   detailAddressContainer: {
     height: PhoneHeight * 0.15

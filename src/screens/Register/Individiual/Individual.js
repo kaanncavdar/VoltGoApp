@@ -136,7 +136,7 @@ const cities = [
 ];
 
 export default function Individual({navigation, route}) {
-  const [token]  = route.params;
+  const {token} = route.params;
   const [cityModalVisible, setCityModalVisible] = useState(false);
   const [districtModalVisible, setDistrictModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Şehir Seçiniz");
@@ -162,7 +162,7 @@ export default function Individual({navigation, route}) {
     try {
       const response = await axios.post(
         "http://147.182.221.195:3000/auth/check-TCKN",
-        { TCKN, country, city, district, address },
+        {TCKN, country, city, district, address},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -170,22 +170,22 @@ export default function Individual({navigation, route}) {
           }
         }
       );
-      console.log("API Response:", response); 
+      console.log("API Response:", response);
       if (response.status === 200) {
         Alert.alert("Başarılı", "Bilgiler başarıyla doğrulandı!");
-        navigation.navigate("CreditCard", { token });
+        navigation.navigate("CreditCard", {token});
       } else {
         Alert.alert("Hata", response.data.message);
       }
     } catch (error) {
       console.log("Error:", error);
       console.log("Error response:", error.response);
-      Alert.alert("Hata", error.response?.data?.message || "AAAAAAAA.");
+      Alert.alert("Hata", error.response?.data?.message);
     }
   };
-  
 
-  const handleContinue = token => {
+  const handleContinue = () => {
+    console.log("Token:", token);
     if (
       !TCKN ||
       selectedCity === "Şehir Seçiniz" ||
@@ -329,7 +329,7 @@ export default function Individual({navigation, route}) {
               style={styles.detailAddress}
               value={address}
               onChangeText={setAddress}
-              multiline={true} 
+              multiline={true}
               textAlignVertical="top"
             />
           </View>

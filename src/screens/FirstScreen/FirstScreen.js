@@ -39,7 +39,7 @@ export default function FirstScreen({navigation}) {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Individual")}>
+      <TouchableOpacity onPress={() => navigation.navigate("CreditCard")}>
         <View style={styles.guestContainer}>
           <Text style={styles.guestText1} allowFontScaling={false}>
             Misafir Girişi _____________________________
