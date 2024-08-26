@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {setToken} from "../../index";
 import {
   Image,
   SafeAreaView,
@@ -7,20 +9,42 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Alert
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../constans/config";
+import ApiManager from "../../api/ApiManager";
 
 export default function Login({navigation}) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const isButtonEnabled = phoneNumber.length === 10 && password.length >= 6;
+
+  const handleLogin = async () => {
+    try {
+      const response = await ApiManager.post(
+        "http://147.182.221.195:3000/auth/login",
+        {
+          phoneNumber: `+90${phoneNumber}`,
+          password
+        }
+      );
+      if (response.status === 200 && response.data.token) {
+        dispatch(setToken(response.data.token)); // Token'ı Redux store'una kaydet
+        console.log("Logged in Token:", response.data.token); // Konsola yazdır
+        navigation.navigate("Station"); // Başarılı giriş sonrası yönlendirme
+      } else {
+        Alert.alert("Hata", "Giriş başarısız");
+      }
+    } catch (error) {
+      Alert.alert("Hata", error.message || "Bir hata oluştu.");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {/* Logo */}
         <Image
           style={styles.image}
           source={require("../../assets/logoVoltgo.png")}
@@ -34,7 +58,7 @@ export default function Login({navigation}) {
             style={styles.input}
             keyboardType="numeric"
             maxLength={10}
-            onChangeText={text => setPhoneNumber(text)}
+            onChangeText={setPhoneNumber}
             value={phoneNumber}
           />
           <Text style={styles.text} allowFontScaling={false}>
@@ -44,40 +68,21 @@ export default function Login({navigation}) {
             placeholder="Şifre"
             style={styles.input}
             secureTextEntry
-            onChangeText={text => setPassword(text)}
+            onChangeText={setPassword}
             value={password}
           />
         </View>
         <View style={styles.loginContainer}>
-          {/* Login Button */}
           <TouchableOpacity
             style={[
               styles.button,
               {backgroundColor: isButtonEnabled ? "#63b32e" : "#a0a0a0"}
             ]}
-            onPress={() => isButtonEnabled && navigation.navigate("Station")}
+            onPress={isButtonEnabled ? handleLogin : null}
             disabled={!isButtonEnabled}
           >
             <Text style={styles.buttonText} allowFontScaling={false}>
               Giriş Yap
-            </Text>
-          </TouchableOpacity>
-          {/* New password */}
-          <TouchableOpacity
-            style={styles.buttonColorless}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Text style={styles.usertext} allowFontScaling={false}>
-              Şifremi Unuttum
-            </Text>
-          </TouchableOpacity>
-          {/* Register */}
-          <TouchableOpacity
-            style={styles.buttonColorless}
-            onPress={() => navigation.navigate("NewUser")}
-          >
-            <Text style={styles.usertext} allowFontScaling={false}>
-              Kayıt ol
             </Text>
           </TouchableOpacity>
         </View>

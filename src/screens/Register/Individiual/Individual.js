@@ -1,4 +1,3 @@
-// Tc dısında tam kısım yok, adres kısmını text olarak girdim görüntü için, şehirleri ve o şehir display olduğunda gözükecek ilçeleri listeyemedim. Adres box'ı düzeltilmeli. Çalışan bir checkbox yazamadım. Şu noktada bir buton yazıp sonraki sayfayı bitirip buraya geri döneceğim.
 import React, {useState} from "react";
 import {
   Image,
@@ -10,9 +9,12 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  FlatList
+  FlatList,
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
+import axios from "axios";
 
 const cities = [
   {
@@ -133,23 +135,67 @@ const cities = [
   }
 ];
 
-export default function Individual({navigation}) {
+export default function Individual({navigation, route}) {
+  const [token]  = route.params;
   const [cityModalVisible, setCityModalVisible] = useState(false);
   const [districtModalVisible, setDistrictModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Şehir Seçiniz");
   const [selectedDistrict, setSelectedDistrict] = useState("İlçe Seçiniz");
   const [currentDistricts, setCurrentDistricts] = useState([]);
+  const [TCKN, setTckn] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleSelectCity = (city, districts) => {
     setSelectedCity(city);
     setCurrentDistricts(districts);
+    setSelectedDistrict("İlçe Seçiniz");
     setCityModalVisible(false);
-    setDistrictModalVisible(true); // Şehir seçildiğinde ilçe modalını aç
+    setDistrictModalVisible(true);
   };
 
   const handleSelectDistrict = district => {
     setSelectedDistrict(district);
     setDistrictModalVisible(false);
+  };
+
+  const checkTCKN = async (TCKN, country, city, district, address, token) => {
+    try {
+      const response = await axios.post(
+        "http://147.182.221.195:3000/auth/check-TCKN",
+        { TCKN, country, city, district, address },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      console.log("API Response:", response); 
+      if (response.status === 200) {
+        Alert.alert("Başarılı", "Bilgiler başarıyla doğrulandı!");
+        navigation.navigate("CreditCard", { token });
+      } else {
+        Alert.alert("Hata", response.data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      console.log("Error response:", error.response);
+      Alert.alert("Hata", error.response?.data?.message || "AAAAAAAA.");
+    }
+  };
+  
+
+  const handleContinue = token => {
+    if (
+      !TCKN ||
+      selectedCity === "Şehir Seçiniz" ||
+      selectedDistrict === "İlçe Seçiniz" ||
+      !address
+    ) {
+      Alert.alert("Uyarı", "Lütfen tüm zorunlu alanları doldurun.");
+      return;
+    }
+    checkTCKN(TCKN, "Türkiye", selectedCity, selectedDistrict, address, token);
   };
 
   const renderCityItem = ({item}) => (
@@ -169,6 +215,12 @@ export default function Individual({navigation}) {
       <Text style={styles.text}>{item}</Text>
     </TouchableOpacity>
   );
+
+  const isButtonEnabled =
+    TCKN &&
+    selectedCity !== "Şehir Seçiniz" &&
+    selectedDistrict !== "İlçe Seçiniz" &&
+    address;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -193,9 +245,10 @@ export default function Individual({navigation}) {
           <TextInput
             placeholder="***********"
             style={styles.input}
-            secureTextEntry
             maxLength={11}
             keyboardType="numeric"
+            value={TCKN}
+            onChangeText={setTckn}
           />
         </View>
         {/* Adres alma inputu */}
@@ -223,7 +276,7 @@ export default function Individual({navigation}) {
           <TouchableOpacity
             style={styles.input}
             onPress={() => setDistrictModalVisible(true)}
-            disabled={!currentDistricts.length} // İlçe seçimi şehir seçildiğinde aktif olur
+            disabled={!currentDistricts.length}
           >
             <Text style={styles.inInput}>{selectedDistrict}</Text>
           </TouchableOpacity>
@@ -263,15 +316,24 @@ export default function Individual({navigation}) {
           </Modal>
         </View>
         {/* Mahalle sokak*/}
-        <View detailAddressContainer>
-          <Text style={styles.addressText} allowFontScaling={false}>
-            Adres*
-          </Text>
-          <TextInput
-            placeholder="Mahalle, Sokak"
-            style={styles.detailAddress}
-          />
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={100}
+        >
+          <View detailAddressContainer>
+            <Text style={styles.addressText} allowFontScaling={false}>
+              Adres*
+            </Text>
+            <TextInput
+              placeholder="Mahalle, Sokak"
+              style={styles.detailAddress}
+              value={address}
+              onChangeText={setAddress}
+              multiline={true} 
+              textAlignVertical="top"
+            />
+          </View>
+        </KeyboardAvoidingView>
         {/* CheckBoxs */}
         {/* <View style={styles.checkBoxContainer}>
           <Checkbox
@@ -290,8 +352,12 @@ export default function Individual({navigation}) {
         {/* Button */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("CreditCard")}
+            style={[
+              styles.button,
+              {backgroundColor: isButtonEnabled ? "#63b32e" : "#a0a0a0"}
+            ]}
+            onPress={handleContinue}
+            disabled={!isButtonEnabled}
           >
             <Text style={styles.buttonText} allowFontScaling={false}>
               Devam et
@@ -373,25 +439,25 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     marginHorizontal: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.9)", // Hafif şeffaf bir arka plan
-    borderRadius: 10, // Kenarları yuvarlak
-    padding: 20 // İç boşluk
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: 10,
+    padding: 20
   },
 
   item: {
-    backgroundColor: "#ffffff", // Elemanların arka planı beyaz
+    backgroundColor: "#ffffff",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderBottomWidth: 1, // Alt kenar çizgisi
-    borderBottomColor: "#E0E0E0", // Çizgi rengi
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
     flexDirection: "row",
-    alignItems: "center", // İkon ve metni ortala
-    justifyContent: "space-between" // İkonu sağa metni sola yasla
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   text: {
     fontSize: 18,
-    color: "#333", // Metin rengi
-    fontWeight: "bold" // Yazı tipi kalınlığı
+    color: "#333",
+    fontWeight: "bold"
   },
   detailAddressContainer: {
     height: PhoneHeight * 0.15

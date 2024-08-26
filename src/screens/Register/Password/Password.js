@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   notificationText: {
     color: "#ffffff",
-    fontSize: 16.5,
+    fontSize: 12,
     marginVertical: 15,
     textAlign: "center",
     textDecorationLine: "underline"

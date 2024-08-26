@@ -51,11 +51,8 @@ export default function PersonID({route, navigation}) {
           }
         }
       );
-
-      console.log("API Yanıtı:", response);
-
       if (response.status === 200) {
-        navigation.navigate("Choose");
+        navigation.navigate("Choose", { token: token });
         console.log("Token:", token);
       } else {
         Alert.alert("Hata", "Bir hata oluştu. Lütfen tekrar deneyin.");

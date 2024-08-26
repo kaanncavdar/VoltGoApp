@@ -1,17 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 
-export default function Choose({navigation}) {
+export default function Choose({navigation, route}) {
+  const token = route.params?.token;
+  console.log("Token in Choose:", token);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -25,7 +27,9 @@ export default function Choose({navigation}) {
           </Text>
         </View>
         {/*Individual */}
-        <TouchableOpacity onPress={() => navigation.navigate("Individual")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Individual", { token: token })}
+        >
           <View style={styles.individualContainer}>
             <Text style={styles.individualText1} allowFontScaling={false}>
               Bireysel Kullanıcı _____________________________
@@ -36,7 +40,9 @@ export default function Choose({navigation}) {
           </View>
         </TouchableOpacity>
         {/*Corporate*/}
-        <TouchableOpacity onPress={() => navigation.navigate("Corporate")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Corporate", {token: token})}
+        >
           <View style={styles.corporateContainer}>
             <Text style={styles.corporateText1} allowFontScaling={false}>
               Kurumsal Kullanıcı _____________________________

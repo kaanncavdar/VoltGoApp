@@ -16,3 +16,5 @@ export {default as Home} from "../screens/Homepage/Home/Home";
 export {default as Notifications} from "../screens/Homepage/Notifications/Notifications";
 export {default as StationDetail} from "../screens/Charge/StationDetail";
 export {default as ApiManager} from "../api/ApiManager";
+export {default as store} from "../store/store";
+export {default as setToken} from "../actions/userActions";

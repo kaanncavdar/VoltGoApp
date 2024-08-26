@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import {PhoneHeight, PhoneWidth} from "../../../constans/config";
 
-export default function CreditCard({navigation}) {
+export default function CreditCard({navigation, route}) {
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -31,7 +32,16 @@ export default function CreditCard({navigation}) {
         <View style={styles.ccContainer}>
           <View>
             <Text style={styles.inputText} allowFontScaling={false}>
-              Adınız:
+              Kart İsmi:
+            </Text>
+            <TextInput
+              placeholder="Kartınıza vermek istediğiniz isim"
+              style={styles.input}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputText} allowFontScaling={false}>
+              Kart Sahibi:
             </Text>
             <TextInput
               placeholder="Kart Üzerinde Yazan İsim/Soyisim"

@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {Alert} from "react-native";
+import {useDispatch} from "react-redux";
+import { setToken } from "../../../actions/userActions";
 import {
   Image,
   SafeAreaView,
@@ -15,7 +17,7 @@ import {ApiManager} from "../../../index";
 
 export default function NewUser({navigation}) {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [token, setToken] = useState("");
+  const dispatch = useDispatch();
 
   const isButtonEnabled = phoneNumber.length === 10;
 
@@ -25,18 +27,19 @@ export default function NewUser({navigation}) {
         phoneNumber: `+90${phoneNumber}`
       });
 
+      console.log("API Response:", response); // API'den gelen yanıtı kontrol et
+
       if (response.status === 200) {
         const {token} = response.data.data;
-        console.log("Token:", token);
-        setToken(token);
-        navigation.navigate("Password", {token});
+        console.log("Token received:", token); // Token logla
+        dispatch(setToken(token)); // Redux store'una token'ı kaydet
+        navigation.navigate("Password", {token}); // Password sayfasına navigate
       } else {
         Alert.alert("Hata", "Bir hata oluştu. Lütfen tekrar deneyin.");
       }
     } catch (error) {
-      console.log(error);
-      let errorMessage = error.response?.data?.message;
-      Alert.alert("Hata", errorMessage);
+      console.error("API Error:", error);
+      Alert.alert("Hata", error.message || "Bir hata oluştu.");
     }
   };
 
@@ -107,7 +110,7 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     width: PhoneWidth,
-    height: PhoneHeight * 0.11
+    height: PhoneHeight * 0.2
   },
   infoText: {
     margin: 10,

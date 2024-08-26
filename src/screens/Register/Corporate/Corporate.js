@@ -186,17 +186,33 @@ export default function Individual({navigation}) {
             bilgilerinizi giriniz.
           </Text>
         </View>
-        {/* TC alma inputu */}
+        {/* Corpo Name */}
         <View style={styles.tckn}>
           <Text style={styles.tcknText} allowFontScaling={false}>
-            TCKN*
+            Şirket Adı
           </Text>
           <TextInput
-            placeholder="***********"
             style={styles.input}
-            secureTextEntry
-            maxLength={11}
+          />
+        </View>
+        {/* Tax Number */}
+        <View style={styles.tckn}>
+          <Text style={styles.tcknText} allowFontScaling={false}>
+            Vergi Numarası*
+          </Text>
+          <TextInput
+            style={styles.input}
+            maxLength={10}
             keyboardType="numeric"
+          />
+        </View>
+        {/* Tax Place*/}
+        <View style={styles.tckn}>
+          <Text style={styles.tcknText} allowFontScaling={false}>
+            Vergi Dairesi*
+          </Text>
+          <TextInput
+            style={styles.input}
           />
         </View>
         {/* Adres alma inputu */}
@@ -328,7 +344,7 @@ const styles = StyleSheet.create({
   },
   tckn: {
     alignItems: "center",
-    height: PhoneHeight * 0.15
+    height: PhoneHeight * 0.13
   },
   tcknText: {
     color: "#ffffff",
